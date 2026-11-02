@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Cron Job: Lấy email IMAP Gmail định kỳ (Mặc định: TẮT) -->
+        <record id="ir_cron_fetch_imap_emails" model="ir.cron">
+            <field name="name">Email Security: Lấy email IMAP định kỳ</field>
+            <field name="model_id" ref="model_email_imap_config"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_fetch_all_active_configs()</field>
+            <field name="interval_number">15</field>
+            <field name="interval_type">minutes</field>
+            <field name="active" eval="False"/>
+        </record>
+    </data>
+</odoo>

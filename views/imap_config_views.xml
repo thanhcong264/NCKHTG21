@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- 1. GIAO DIEN DANH SACH CẤU HÌNH IMAP -->
+    <record id="view_email_imap_config_list" model="ir.ui.view">
+        <field name="name">email.imap.config.list</field>
+        <field name="model">email.imap.config</field>
+        <field name="arch" type="xml">
+            <list string="Cấu hình IMAP Gmail">
+                <field name="name"/>
+                <field name="imap_user"/>
+                <field name="folder"/>
+                <field name="filter_type"/>
+                <field name="fetch_limit"/>
+                <field name="auto_analyze" widget="boolean_toggle"/>
+                <field name="last_fetch_date"/>
+                <field name="fetched_count_total"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- 2. GIAO DIEN FORM CẤU HÌNH IMAP -->
+    <record id="view_email_imap_config_form" model="ir.ui.view">
+        <field name="name">email.imap.config.form</field>
+        <field name="model">email.imap.config</field>
+        <field name="arch" type="xml">
+            <form string="Cấu hình IMAP Gmail">
+                <header>
+                    <button
+                        name="action_test_connection"
+                        type="object"
+                        string="Kiểm tra kết nối"
+                        class="btn-secondary"
+                        icon="fa-plug"
+                    />
+                    <button
+                        name="action_fetch_emails"
+                        type="object"
+                        string="Lấy email ngay"
+                        class="oe_highlight"
+                        icon="fa-download"
+                    />
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" string="Tên cấu hình"/>
+                        <h1>
+                            <field name="name" placeholder="Ví dụ: Gmail Kiểm tra Phishing"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string="Thông tin kết nối Gmail">
+                            <field name="imap_host"/>
+                            <field name="imap_port"/>
+                            <field name="imap_user" placeholder="yourname@gmail.com"/>
+                            <field name="imap_password" password="True" placeholder="Mật khẩu ứng dụng 16 ký tự"/>
+                            <field name="use_ssl"/>
+                        </group>
+
+                        <group string="Tùy chọn tải email">
+                            <field name="folder"/>
+                            <field name="filter_type"/>
+                            <field name="fetch_limit"/>
+                            <field name="auto_analyze"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+
+                    <group string="Lịch sử đồng bộ gần nhất">
+                        <group>
+                            <field name="last_fetch_date"/>
+                            <field name="fetched_count_total"/>
+                        </group>
+                        <group>
+                            <field name="last_fetch_status" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Hướng dẫn lấy App Password Gmail">
+                            <div class="alert alert-info" role="alert">
+                                <h5><strong>Các bước tạo Mật khẩu ứng dụng (App Password) trên Gmail:</strong></h5>
+                                <ol>
+                                    <li>Đăng nhập tài khoản Google của bạn tại <a href="https://myaccount.google.com" target="_blank">myaccount.google.com</a>.</li>
+                                    <li>Vào mục <strong>Bảo mật (Security)</strong> và đảm bảo <strong>Xác minh 2 bước (2-Step Verification)</strong> đã được bật.</li>
+                                    <li>Tìm mục <strong>Mật khẩu ứng dụng (App Passwords)</strong>.</li>
+                                    <li>Nhập tên ứng dụng (ví dụ: <code>Odoo Phishing Detector</code>) rồi bấm <strong>Tạo</strong>.</li>
+                                    <li>Google sẽ cấp một mật khẩu gồm 16 ký tự. Sao chép và dán vào ô <strong>Mật khẩu ứng dụng</strong> ở trên.</li>
+                                    <li>Trong Gmail, vào <strong>Cài đặt (Settings)</strong> &gt; <strong>Chuyển tiếp và POP/IMAP</strong>, đảm bảo đã chọn <strong>Bật IMAP</strong>.</li>
+                                </ol>
+                            </div>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- 3. ACTION CHO CẤU HÌNH IMAP -->
+    <record id="action_email_imap_config" model="ir.actions.act_window">
+        <field name="name">Cấu hình IMAP</field>
+        <field name="res_model">email.imap.config</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Tạo cấu hình IMAP Gmail mới
+            </p>
+            <p>
+                Kết nối với Gmail để tự động hoặc lấy thủ công các email mới vào hệ thống phân tích phishing.
+            </p>
+        </field>
+    </record>
+
+    <!-- 4. MENU CON TRONG EMAIL SECURITY (Chỉ Quản trị viên hệ thống thấy) -->
+    <menuitem
+        id="menu_email_imap_config"
+        name="Cấu hình IMAP"
+        parent="menu_email_phishing_root"
+        action="action_email_imap_config"
+        groups="base.group_system"
+        sequence="2"
+    />
+</odoo>

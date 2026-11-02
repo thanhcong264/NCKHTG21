@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_email_phishing_check_user,email.phishing.check user,model_email_phishing_check,base.group_user,1,1,1,1
+access_email_imap_config_admin,email.imap.config admin,model_email_imap_config,base.group_system,1,1,1,1
+
+
+
